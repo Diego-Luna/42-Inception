@@ -7,4 +7,11 @@ Version 0.1
 - sudo usermod -aG docker ${USER}
 ### Run 
 - docker build -t my-nginx .
-- docker run -d -p 80:80 --name my-nginx-container my-nginx
+- docker run --name some-nginx -d -p 8080:80 my-nginx
+- docker stop my-nginx-container
+- docker rm -f my-nginx-container
+
+
+#img
+- sudo docker image ls
+- sudo  docker image rm 2f9a77f899ea

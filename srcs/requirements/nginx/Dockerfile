@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-# FROM nginx
+#FROM nginx:latest
+
 FROM debian:buster
 
 RUN apt-get update && apt-get upgrade -y 
@@ -16,11 +17,13 @@ RUN openssl req \
             -nodes \
             -days 365 \
             -newkey rsa:2048 \
-            -keyout /etc/ssl/private/nginx-selfsigned.key \
-            -out /etc/ssl/certs/nginx-selfsigned.crt \
-            -subj '/C=FR/ST=Ile-de-France/L=Paris/O=42/OU=42Paris/CN=TLIOT/UID=TTT'
+            -keyout /etc/nginx/ssl/inception.key \
+            -out /etc/nginx/ssl/inception.crt \
+            -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=dluna-lo.42.fr/UID=login"
 
 
-COPY . /home/dluna-lo/Documents/42-Inception/srcs/requirements/nginx/tools/
-# COPY config/nginx.conf /etc/nginx/http.d/default.conf
+RUN mkdir -p /var/run/nginx
 
+COPY config/nginx.conf /etc/nginx/nginx.conf
+# COPY . /home/dluna-lo/Documents/42-Inception/srcs/requirements/nginx/tools/
+#COPY config/ /usr/share/nginx/html
