@@ -6,10 +6,13 @@ FROM debian:buster
 RUN apt-get update && apt-get upgrade -y 
 
 # FOR DEBUGIN
-RUN apt install -y iputils-ping vim 
+RUN apt install -y vim curl
 
 # UDPATE & INSTALLATION
-RUN apt-get install -y nginx openssl
+RUN apt install nginx -y
+RUN apt install OpenSSL -y
+
+RUN mkdir -p /etc/nginx/ssl
 
 # openssl run
 RUN openssl req \
@@ -27,3 +30,9 @@ RUN mkdir -p /var/run/nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 # COPY . /home/dluna-lo/Documents/42-Inception/srcs/requirements/nginx/tools/
 #COPY config/ /usr/share/nginx/html
+
+RUN chmod 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
