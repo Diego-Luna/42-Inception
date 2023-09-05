@@ -8,6 +8,7 @@ Version 0.1
 ### Run 
 - docker build -t my-nginx .
 - docker run --name some-nginx -d -p 8080:80 my-nginx
+- docker run -it mariadb
 - docker stop my-nginx-container
 - docker rm -f my-nginx-container
 
