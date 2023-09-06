@@ -4,15 +4,34 @@ services:
     build: ./proxy
     networks:
       - frontend
-  app:
-    build: ./app
+
+  nginx: #wordpress?
+    container_name: nginx
+    volumes:
+    - wordpress:/var/www/wordpress
     networks:
-      - frontend
-      - backend
+      - inception
+    build:
+    context: requirements/nginx
+    dockerfile: Dockerfile
+    env_file: .env
+    ports:
+    - "443:443" 		# on indique le port qui sera exposé a la machine locale
+    restart: on-failure
+
   mariadb:
-    image: mariadb
+    container_name: mariadb	
     networks:
-      - backend
+    - inception 
+    build: 
+      context: requirements/mariadb
+      dockerfile: Dockerfile
+      env_file: .env 
+    volumes:
+      - mariadb:/var/lib/mysql
+      restart: unless-stopped 
+    expose:
+      - "3306"
 
 networks:
   frontend:
