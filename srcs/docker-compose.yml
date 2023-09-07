@@ -11,8 +11,8 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
     restart: unless-stopped 
-    expose:
-      - "3306"
+    # expose:
+    #   - "3306"
 
   wordpress:
     container_name: wordpress
@@ -62,14 +62,14 @@ networks:
 
 volumes:
   wordpress:
-    driver: local 
+    driver: local
     driver_opts:
-      type: 'none' 									
+      type: 'none'
       o: 'bind'
-      device: '/home/dluna-lo/data/wordpress' 		
+      device: '/home/dluna-lo/data/wordpress'
   mariadb:
     driver: local
     driver_opts:
       type: 'none'
-      o: 'bind'										 
-      device: '/home/dluna-lo/data/mariadb'			
+      o: 'bind'
+      device: '/home/dluna-lo/data/mariadb'

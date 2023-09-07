@@ -19,6 +19,6 @@ Version 0.5
 
 
 ## docker-compose
-- docker compose up // compile
+- docker compose up // run
 - docker compose down // Removed
 - docker compose build // Reconstruir las imágenes de los contenedores:
