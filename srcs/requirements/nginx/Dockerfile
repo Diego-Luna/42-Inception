@@ -10,7 +10,7 @@ RUN apt install -y vim curl
 
 # UDPATE & INSTALLATION
 RUN apt install nginx -y
-RUN apt install OpenSSL -y
+RUN apt install openssl -y
 
 RUN mkdir -p /etc/nginx/ssl
 
@@ -22,7 +22,7 @@ RUN openssl req \
             -newkey rsa:2048 \
             -keyout /etc/nginx/ssl/inception.key \
             -out /etc/nginx/ssl/inception.crt \
-            -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=dluna-lo.42.fr/UID=login"
+            -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=dluna-lo.42.fr/UID=dluna-lo"
 
 
 RUN mkdir -p /var/run/nginx

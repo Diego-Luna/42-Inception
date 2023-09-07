@@ -19,4 +19,6 @@ Version 0.5
 
 
 ## docker-compose
-- docker-compose -f <path_docker_compose>  -d —build
+- docker compose up // compile
+- docker compose down // Removed
+- docker compose build // Reconstruir las imágenes de los contenedores:
