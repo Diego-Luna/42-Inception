@@ -13,6 +13,10 @@ Version 0.5
 - docker rm -f my-nginx-container
 
 
-#img
+## img
 - sudo docker image ls
 - sudo  docker image rm 2f9a77f899ea
+
+
+## docker-compose
+- docker-compose -f <path_docker_compose>  -d —build

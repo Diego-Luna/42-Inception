@@ -1,9 +1,20 @@
 #hola
 services:
-  proxy:
-    build: ./proxy
+  wordpress:
+    container_name: wordpress
+    env_file: .env
+    volumes:
+    - wordpress:/var/www/wordpress
     networks:
-      - frontend
+    - inception
+    build:
+    context: requirements/wordpress
+    dockerfile: Dockerfile
+    depends_on:
+    - mariadb
+    restart: on-failure
+    expose:
+    - "9000"
 
   nginx: #wordpress?
     container_name: nginx
@@ -15,12 +26,14 @@ services:
     context: requirements/nginx
     dockerfile: Dockerfile
     env_file: .env
+    depends_on:
+    - wordpress
     ports:
-    - "443:443" 		# on indique le port qui sera exposé a la machine locale
+    - "443:443"
     restart: on-failure
 
   mariadb:
-    container_name: mariadb	
+    container_name: mariadb
     networks:
     - inception 
     build: 
@@ -33,13 +46,29 @@ services:
     expose:
       - "3306"
 
+# networks:
+#   frontend:
+#     driver: custom-driver-1
+#   backend:
+#     driver: custom-driver-2
+#     driver_opts:
+#       foo: "1"
+#       bar: "2"
+
 networks:
-  frontend:
-    # Use a custom driver
-    driver: custom-driver-1
-  backend:
-    # Use a custom driver which takes special options
-    driver: custom-driver-2
+  inception:
+  driver: bridge
+
+volumes:
+  wordpress:
+    driver: local 
     driver_opts:
-      foo: "1"
-      bar: "2"
+    type: 'none' 									
+    o: 'bind'
+    device: '/Users/login/data/wordpress' 		
+  mariadb:
+    driver: local
+    driver_opts:
+    type: 'none'
+    o: 'bind'										 
+    device: '/Users/login/data/mariadb'			
