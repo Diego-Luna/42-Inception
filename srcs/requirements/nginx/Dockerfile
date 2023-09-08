@@ -11,10 +11,13 @@ RUN apt install -y vim curl
 # UDPATE & INSTALLATION
 RUN apt install nginx -y
 RUN apt install openssl -y
+RUN apt install git -y
 
-RUN mkdir -p /etc/nginx/ssl
+RUN git clone https://github.com/vishnubob/wait-for-it.git /opt/wait-for-it
+
 
 # openssl run
+RUN mkdir -p /etc/nginx/ssl
 RUN openssl req \
             -x509 \
             -nodes \
@@ -34,5 +37,6 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 RUN chmod 755 /var/www/html
 RUN chown -R www-data:www-data /var/www/html
 
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
 CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# CMD ["/opt/wait-for-it/wait-for-it.sh", "wordpress:9000", "--", "nginx", "-g", "daemon off;"]

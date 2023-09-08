@@ -31,3 +31,23 @@ run-nginx:
 run-wordpress:
 	@cd srcs/requirements/wordpress
 	@docker run -it my-wordpress .
+
+	all: build up
+
+build:
+	@cd srcs/requirements/
+	docker-compose build
+
+up:
+	@cd srcs/requirements/
+	docker-compose up -d
+
+down:
+	@cd srcs/requirements/
+	docker-compose down
+
+clean: down
+	@cd srcs/requirements/
+	docker volume prune -f
+
+.PHONY: all build up down clean
