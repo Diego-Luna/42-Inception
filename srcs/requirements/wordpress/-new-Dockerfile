@@ -1,0 +1,30 @@
+FROM debian:buster
+
+# Actualiza y configura los repositorios necesarios
+RUN apt-get update && apt-get upgrade -y && apt-get install -y apt-transport-https lsb-release ca-certificates wget curl
+
+# Instala PHP 8.1 & MariaDB-client dependencies (es posible que algunos paquetes tengan nombres diferentes o no estén disponibles; ajusta según sea necesario)
+RUN apt-get install -y &&\
+     apt-get install -y mariadb-client
+
+RUN apt-get install -y php7.3\
+                        php-fpm\
+                        php-mysql\
+                        mariadb-client
+
+# Configura PHP-fpm para que escuche en el puerto de red interno 9000
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
+
+# Instala WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar &&\
+    chmod +x wp-cli.phar &&\
+    mv wp-cli.phar /usr/bin/wp-cli.phar
+
+# # Copia el archivo de configuración de WordPress
+COPY ./config/auto_config.sh /tmp/auto_config.sh
+RUN chmod +x /tmp/auto_config.sh
+
+WORKDIR /var/www/html/wordpress
+
+# Ejecuta el archivo de configuración de WordPress al iniciar el contenedor
+ENTRYPOINT [ "sh", "/tmp/auto_config.sh" ]

@@ -1,53 +1,34 @@
-# run containers?
 
-run:
+# Edit login before launching !
+LOGIN =		dluna-lo
+DOMAIN =	${LOGIN}.42.fr
+# DATA_PATH = /home/${LOGIN}/data
+DATA_PATH = /Users/diegofranciscolunalopez/Documents/data-3
+ENV =		LOGIN=${LOGIN} DATA_PATH=${DATA_PATH} DOMAIN=${LOGIN}.42.fr
 
-clean:
 
-all:
-
-re:
-
-build-db:
-	@cd srcs/requirements/mariadb
-	@docker build -t my-mariadb .
-
-build-nginx:
-	@cd srcs/requirements/nginx
-	@docker build -t my-nginx .
-
-build-wordpress:
-	@cd srcs/requirements/wordpress
-	@docker build -t my-wordpress .
-
-run-db:
-	@cd srcs/requirements/mariadb
-	@docker run -it my-mariadb .
-
-run-nginx:
-	@cd srcs/requirements/nginx
-	@docker run --name some-nginx -d -p 8080:80 my-nginx
-
-run-wordpress:
-	@cd srcs/requirements/wordpress
-	@docker run -it my-wordpress .
-
-	all: build up
-
-build:
-	@cd srcs/requirements/
-	docker-compose build
+build: up
 
 up:
-	@cd srcs/requirements/
-	docker-compose up -d
+	@${ENV};
+	@echo "Building containers..."
+	@cd ./srcs/ && pwd && docker-compose -f docker-compose.yml up -d --build
+
+start:
+	@${ENV};
+	@cd ./srcs/ && docker-compose -f docker-compose.yml start
 
 down:
 	@cd srcs/requirements/
-	docker-compose down
+	docker-compose -f ./srcs/docker-compose.yml down
 
 clean: down
 	@cd srcs/requirements/
 	docker volume prune -f
+	sudo rm -rf ${DATA_PATH}
 
-.PHONY: all build up down clean
+config:
+	sudo mkdir -p ${DATA_PATH}/mariadb
+	sudo mkdir -p ${DATA_PATH}/wordpress
+
+.PHONY: build up down clean down config

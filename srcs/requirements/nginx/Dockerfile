@@ -1,42 +1,26 @@
-# syntax=docker/dockerfile:1
-#FROM nginx:latest
+FROM	alpine:3.18
 
-FROM debian:buster
+# NGINX
+RUN		apk update && apk upgrade &&\
+		apk add nginx &&\
+		mkdir -p /var/www/html/
+COPY	./config/nginx.conf /etc/nginx/nginx.conf
+COPY	./config/default.conf /etc/nginx/http.d/default.conf
 
-RUN apt-get update && apt-get upgrade -y 
+# OPENSSL
+RUN		apk add openssl &&\
+		openssl req -x509 -nodes -days 365 -newkey rsa:2048\
+			-keyout /etc/ssl/private/nginx-selfsigned.key\
+			-out /etc/ssl/certs/nginx-selfsigned.crt\
+			-subj "/C=FR/ST=IDF/L=Paris/O=42Network/OU=42Paris/CN=nginx_host_example"
 
-# FOR DEBUGIN
-RUN apt install -y vim curl
+RUN		adduser -D -g 'www' www &&\
+		chown -R www:www /run/nginx/ &&\
+		chown -R www:www /var/www/html/
 
-# UDPATE & INSTALLATION
-RUN apt install nginx -y
-RUN apt install openssl -y
-RUN apt install git -y
+EXPOSE	443/tcp
 
-RUN git clone https://github.com/vishnubob/wait-for-it.git /opt/wait-for-it
-
-
-# openssl run
-RUN mkdir -p /etc/nginx/ssl
-RUN openssl req \
-            -x509 \
-            -nodes \
-            -days 365 \
-            -newkey rsa:2048 \
-            -keyout /etc/nginx/ssl/inception.key \
-            -out /etc/nginx/ssl/inception.crt \
-            -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=dluna-lo.42.fr/UID=dluna-lo"
-
-
-RUN mkdir -p /var/run/nginx
-
-COPY config/nginx.conf /etc/nginx/nginx.conf
-# COPY . /home/dluna-lo/Documents/42-Inception/srcs/requirements/nginx/tools/
-#COPY config/ /usr/share/nginx/html
-
-RUN chmod 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
-CMD ["nginx", "-g", "daemon off;"]
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-# CMD ["/opt/wait-for-it/wait-for-it.sh", "wordpress:9000", "--", "nginx", "-g", "daemon off;"]
+# Run nginx with daemon off, i.e. in the foreground since one container only
+# has one service. This is best practice for Docker containers and/or debugging.
+ENTRYPOINT	["nginx"]
+CMD			["-g", "daemon off;"]
