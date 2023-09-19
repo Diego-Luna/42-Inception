@@ -20,10 +20,6 @@ RUN		sed -i 's/listen = 127.0.0.1:9000/listen = 9000/g' /etc/php81/php-fpm.d/www
 
 # Install WP-CLI
 #	Moving wp-cli.phar to /usr/bin/wp-cli.phar rather than /usr/bin/wp to avoid
-#	PHP errors for phar vendors files missing. This is a wp-cli bug:
-#		https://github.com/wp-cli/config-command/issues/141
-#		https://github.com/wp-cli/config-command/issues/31
-#		https://github.com/wp-cli/wp-cli/issues/4689#issuecomment-366428642
 RUN		apk add curl &&\
 		curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar &&\
 		chmod +x wp-cli.phar &&\
