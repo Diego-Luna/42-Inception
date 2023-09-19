@@ -1,82 +1,3 @@
-# # #hola
-# services:
-#   mariadb:
-#     container_name: mariadb
-#     build:          ./requirements/mariadb/
-#     image:          mariadb:inception
-#     env_file:       .env
-#     networks:
-#         - inception
-#     restart:        on-failure
-#     volumes:
-#         - mariadb:/var/lib/mysql/
-
-#   wordpress:
-#     container_name: wordpress
-#     build:
-#       context: ./requirements/wordpress/
-#       dockerfile: Dockerfile
-#     image:          wordpress:inception
-#     env_file: .env
-#     volumes:
-#       - wordpress:/var/www/wordpress/
-#     networks:
-#       - inception
-#     depends_on:
-#       - mariadb
-#     restart: on-failure
-#     expose:
-#       - "9000"
-
-#   nginx:
-#     container_name: nginx
-#     volumes:
-#       - wordpress:/var/www/wordpress/
-#     networks:
-#       - inception
-#     build:
-#       context: ./requirements/nginx/
-#       dockerfile: Dockerfile
-#     image:          nginx:inception
-#     env_file: .env
-#     depends_on:
-#       - wordpress
-#     ports:
-#       - "443:443"
-#     restart: on-failure
-
-# # networks:
-# #   frontend:
-# #     driver: custom-driver-1
-# #   backend:
-# #     driver: custom-driver-2
-# #     driver_opts:
-# #       foo: "1"
-# #       bar: "2"
-
-# networks:
-#   inception:
-#     name:   inception
-#     driver: bridge
-
-# volumes:
-#   wordpress:
-#     driver: local
-#     driver_opts:
-#       type: 'none'
-#       o: 'bind'
-#       device: 'Users/diegofranciscolunalopez/Documents/data/wordpress'
-#       # device: '/home/dluna-lo/data/wordpress'
-#   mariadb:
-#     driver: local
-#     driver_opts:
-#       type: 'none'
-#       o: 'bind'
-#       device: 'Users/diegofranciscolunalopez/Documents/data/mariadb'
-#       # device: '/home/dluna-lo/data/mariadb'
-
-
-################################################################################################
 version: "3.7"
 
 services:
@@ -91,7 +12,7 @@ services:
             - "443:443"
         restart:        on-failure
         volumes:
-            - wordpress-data:/var/www/html/
+            - wordpress:/var/www/html/
         depends_on:
             - wordpress
     mariadb:
@@ -103,7 +24,7 @@ services:
             - inception
         restart:        on-failure
         volumes:
-            - mariadb-data:/var/lib/mysql/
+            - mariadb:/var/lib/mysql/
     wordpress:
         container_name: wordpress
         build:          ./requirements/wordpress/
@@ -113,7 +34,7 @@ services:
             - inception
         restart:        on-failure
         volumes:
-            - wordpress-data:/var/www/html/
+            - wordpress:/var/www/html/
         depends_on:
             - mariadb
 
@@ -123,15 +44,17 @@ networks:
         driver: bridge
 
 volumes:
-  mariadb-data:
+  mariadb:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: Users/diegofranciscolunalopez/Documents/data/mariadb-data
-  wordpress-data:
+      device: /home/dluna-lo/data/mariadb
+    #   device: Users/diegofranciscolunalopez/Documents/data/mariadb
+  wordpress:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: Users/diegofranciscolunalopez/Documents/data/wordpress-data
+      device: /home/dluna-lo/data/wordpress
+    #   device: Users/diegofranciscolunalopez/Documents/data/wordpress-data

@@ -42,3 +42,10 @@ Version 0.5
 
 ## WordPress
 1. https://dluna-lo.42.fr/wordpress/wp-login.php
+
+
+## ip
+- sudo nano /etc/hosts
+- -	127.0.0.1       dluna-lo.42.fr
+
+

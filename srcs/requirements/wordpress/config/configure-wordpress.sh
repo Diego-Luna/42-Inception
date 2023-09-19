@@ -32,5 +32,5 @@ else
 fi
 
 echo "-> (WP) Starting WordPress fastCGI on port 9000."
-exec /usr/sbin/php-fpm81 -F -R
 echo "--> (WP) WordPress is ready."
+exec /usr/sbin/php-fpm81 -F -R
