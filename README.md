@@ -49,3 +49,22 @@ Version 0.5
 - -	127.0.0.1       dluna-lo.42.fr
 
 
+## users
+- Crear un nuevo usuario:
+- - sudo adduser nombre_usuario
+
+- add user
+- - sudo usermod -aG nombre_grupo nombre_usuario
+
+- Crear un nuevo grupo:
+- - sudo addgroup nombre_grupo
+
+- Eliminar un usuario
+- - sudo deluser nombre_usuario
+
+- Eliminar un usuario y su directorio de inicio:
+- - sudo deluser --remove-home nombre_usuario
+
+- Eliminar un grupo:
+- - sudo delgroup nombre_grupo
+
