@@ -68,3 +68,6 @@ Version 0.5
 - Eliminar un grupo:
 - - sudo delgroup nombre_grupo
 
+- cut -d: -f1 /etc/group
+
+
