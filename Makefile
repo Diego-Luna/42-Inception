@@ -1,5 +1,5 @@
-DATA_PATH = /home/dluna-lo/data
-# DATA_PATH = /Users/diegofranciscolunalopez/Documents/data
+# DATA_PATH = /home/dluna-lo/data
+DATA_PATH = /Users/diegofranciscolunalopez/Documents/data
 
 
 build: up
@@ -29,7 +29,7 @@ config:
 	sudo mkdir -p ${DATA_PATH}
 	sudo mkdir -p ${DATA_PATH}/mariadb
 	sudo mkdir -p ${DATA_PATH}/wordpress
-	# sudo chown -R ${USER}: ${DATA_PATH}
+	sudo chown -R ${USER}: ${DATA_PATH}
 
 fclean: clean
 	docker system prune -f -a --volumes
